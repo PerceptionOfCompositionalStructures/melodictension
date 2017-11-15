@@ -28,6 +28,11 @@
     timing_post_trial: 5000
   };
 
+  var conclusion_block = {
+    type: "text",
+    text: "The experiment has concluded. Thank you!"
+  };
+
   /* define test block */
 
   var test_stimuli = [
@@ -103,6 +108,7 @@
   var timeline = [];
   timeline.push(welcome_block);
   timeline.push(instructions_block);
+  timeline.push(conclusion_block);
   timeline.push(test_block);
   timeline.push(debrief_block);
 
