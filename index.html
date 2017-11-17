@@ -5,6 +5,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="jspsych-5.0.3/jspsych.js"></script>
     <script src="jspsych-5.0.3/plugins/jspsych-text.js"></script>
+    <script src="jspsych-5.0.3/plugins/jspsych-single-audio.js"></script>
     <link href="jspsych-5.0.3/css/jspsych.css" rel="stylesheet" type="text/css"></link>
   </head>
   <body>
@@ -21,10 +22,20 @@
   var instructions_block = {
     type: "text",
     text: "<p>In this experiment, you will rate the <strong>melodic tension</strong> " +
-        "of several music excerpts.</p><p>For this purpose, use the <strong>slider</strong> " +
-        "that will appear in the bottom of the screen while you listen to the music excerpt.</p>" +
+        "of several music excerpts.</p><p>For this purpose, use your <strong>keyboard</strong> " +
+        "and press the corresponding key according to your perceived musical tension.</p>" +
         "<p>Press any key to begin.</p>",
-    timing_post_trial: 2000
+    timing_post_trial: 1000
+  };
+
+  var trial = {
+    type: "single-audio",
+    stimulus: "wav/sine.mp3",
+    prompt: "<p>Listen to the musical excerpt." +
+            "Rate the musical tension using your keyboard:</p>"+
+            "<p><strong>H</strong> for high tension</p>"+
+            "<p><strong>M</strong> for medium tension</p>"+
+            "<p><strong>L</strong> for low tension</p>"
   };
 
   var conclusion_block = {
@@ -36,6 +47,7 @@
   var timeline = [];
   timeline.push(welcome_block);
   timeline.push(instructions_block);
+  timeline.push(trial);
   timeline.push(conclusion_block);
 
   /* start the experiment */
