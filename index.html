@@ -5,15 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Melodic tension experiment</title>
 
-    <!-- update the version number as needed -->
-    <script defer src="/__/firebase/4.6.2/firebase-app.js"></script>
-    <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/4.6.2/firebase-auth.js"></script>
-    <script defer src="/__/firebase/4.6.2/firebase-database.js"></script>
-    <script defer src="/__/firebase/4.6.2/firebase-messaging.js"></script>
-    <script defer src="/__/firebase/4.6.2/firebase-storage.js"></script>
-    <!-- initialize the SDK after all desired features are loaded -->
-    <script defer src="/__/firebase/init.js"></script>
+    <!-- Firebase stuff -->
+    <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
 
     <!-- jsPsych stuff -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -36,25 +29,25 @@
   </body>
   <script>
       document.addEventListener('DOMContentLoaded', function() {
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-        // // The Firebase SDK is initialized and available here!
-        //
-        // firebase.auth().onAuthStateChanged(user => { });
-        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
-        // firebase.messaging().requestPermission().then(() => { });
-        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
-        //
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-
-        try {
-          let app = firebase.app();
-          let features = ['auth', 'database', 'messaging', 'storage'].filter(feature => typeof app[feature] === 'function');
-          document.getElementById('load').innerHTML = `Firebase SDK loaded with ${features.join(', ')}`;
-        } catch (e) {
-          console.error(e);
-          document.getElementById('load').innerHTML = 'Error loading the Firebase SDK, check the console.';
-        }
+        var config = {
+            apiKey: "AIzaSyC9h6hWI4x4_V7-Je3kLbN6Jj8sXJfUJsw",
+            authDomain: "melodictension-7fd48.firebaseapp.com",
+            databaseURL: "https://melodictension-7fd48.firebaseio.com",
+            projectId: "melodictension-7fd48",
+            storageBucket: "melodictension-7fd48.appspot.com",
+            messagingSenderId: "257182343672"
+          };
+          firebase.initializeApp(config);
       });
+
+      function writeStuff(obj){
+        console.log("Trying to write");
+
+        var ref = firebase.database().ref('experiments/');
+        ref.push(obj);
+
+        console.log("Pushing some s...tuff!");
+      }
 
       var welcome_block = {
         type: "text",
@@ -95,7 +88,10 @@
 
       /* start the experiment */
       jsPsych.init({
-        timeline: timeline
+        timeline: timeline,
+        on_finish: function(){
+          writeStuff(jsPsych.data.getData());
+        }
       });
 
   </script>
