@@ -17,15 +17,6 @@
 
   </head>
   <body>
-  <!-- 
-    <div id="message">
-      <h2>Welcome</h2>
-      <h1>Firebase Hosting Setup Complete</h1>
-      <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
-      <a target="_blank" src="experiment/index.html">Go to the experiment</a>
-    </div>
-    <p id="load">Firebase SDK Loading&hellip;</p>
-  -->
   </body>
   <script>
       document.addEventListener('DOMContentLoaded', function() {
@@ -59,7 +50,7 @@
         type: "text",
         text: "<p>In this experiment, you will rate the <strong>melodic tension</strong> " +
             "of several music excerpts.</p><p>For this purpose, use your <strong>keyboard</strong> " +
-            "and press the corresponding key according to your perceived musical tension.</p>" +
+            "and press the corresponding number key according to your perceived musical tension.</p>" +
             "<p>Press any key to begin.</p>",
         timing_post_trial: 1000
       };
@@ -67,11 +58,11 @@
       var trial = {
         type: "single-audio",
         stimulus: "wav/sine.mp3",
-        prompt: "<p>Listen to the musical excerpt." +
-                "Rate the musical tension using your keyboard:</p>"+
-                "<p><strong>H</strong> for high tension</p>"+
-                "<p><strong>M</strong> for medium tension</p>"+
-                "<p><strong>L</strong> for low tension</p>"
+        choices:['1','2','3','4','5','6','7'],
+        timing_response: -1,
+        prompt: "<p>Listen to the musical excerpt. " +
+                "Please use the <strong>number keys [1-7]</strong> in your keyboard to rate the musical tension.</p>"+
+                "<p><strong>[1]</strong>: Least tension - <strong>[7]</strong>: Maximum tension</p>"
       };
 
       var conclusion_block = {
@@ -89,6 +80,7 @@
       /* start the experiment */
       jsPsych.init({
         timeline: timeline,
+        show_progress_bar: true,
         on_finish: function(){
           writeStuff(jsPsych.data.getData());
         }
