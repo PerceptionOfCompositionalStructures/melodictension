@@ -80,7 +80,7 @@
       var welcome_block = {
         type: "text",
         text: "<h3>Welcome to the melodic tension experiment!</h3> " +
-        "<p>Before starting the experiment, we will show a short survey to know about the background of our participants.</p> " +
+        "<p>Before starting the experiment, we will ask you a few demographic questions.</p> " +        
         "<p><i>Press any key to continue.</i></p>"
       };
 
@@ -88,13 +88,13 @@
         type: 'survey-multi-choice',
         questions: [
           "What is your age range?", 
-          "What genre do you identify with?", 
+          "What is your sex?", 
           "Are you left-handed or right-handed?", 
           "Do you have perfect pitch?", 
           "Do you have normal hearing?", 
           "How many musical instruments do you play?", 
-          "If you play at least one, how many years have you played? If you play several, we mean your main instrument.", 
-          "Also, how many of those years have you had formal training? (main instrument)"],
+          "If you play one instrument, how many years have you played? If you play several instruments, how long have you been playing your main instrument?", 
+          "How many years have you had formal training on your main instrument?"],
         options: [
         ['<18','18-24','25-32','>32'], 
         ['Male', 'Female', 'Other'],
@@ -106,7 +106,7 @@
         ['<1','1-2','2-4','5-10','>10', 'Not applicable']],
         horizontal: true,
         preamble: "<h3>Short survey</h3> " +
-        "<p>This information is gathered in order to get some demographics about the experiment.</p> " +
+        "<p>This information is gathered to get some demographics about our participants.</p> " +
         "<p>Every question is optional, if you do not want to answer any of them, simply skip them.</p> " +
         "<p>This information is collected separately to the answers of the experiment and they are not linked. Your answers to the experiment are anonymous.</p>"
       };
@@ -133,9 +133,11 @@
         stimulus: "wav/sine.mp3",
         choices:['1','2','3','4','5','6','7'],
         timing_response: -1,
-        prompt: "<p>Listen to the musical excerpt. " +
-                "Please use the <strong>number keys [1-7]</strong> in your keyboard to rate the musical tension.</p>"+
-                "<p><strong>[1]</strong>: Least tension - <strong>[7]</strong>: Maximum tension</p>"
+        prompt: "<h3>Melodic tension experiment</h3> "+ 
+                "<p>Listen to the musical excerpt. " +
+                "Please use the <strong>number keys [1-7]</strong> in your keyboard to rate the musical tension.</p>" +
+                "<p>Also, please <strong>wait until the audio has finished</strong> to provide your answer."+
+                "<p><strong>[1]</strong>: Least tension - <strong>[7]</strong>: Most tension</p>"
       };
 
       var conclusion_block = {
