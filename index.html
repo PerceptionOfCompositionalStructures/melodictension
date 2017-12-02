@@ -12,7 +12,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="jspsych-5.0.3/jspsych.js"></script>
     <script src="jspsych-5.0.3/plugins/jspsych-text.js"></script>
+    <script src="jspsych-5.0.3/plugins/jspsych-survey-multi-choice.js"></script>
     <script src="jspsych-5.0.3/plugins/jspsych-single-audio.js"></script>
+    <script src="jspsych-5.0.3/plugins/jspsych-button-response.js"></script>
     <link href="jspsych-5.0.3/css/jspsych.css" rel="stylesheet" type="text/css"></link>
 
   </head>
@@ -31,28 +33,99 @@
           firebase.initializeApp(config);
       });
 
-      function writeStuff(obj){
+      function writeStuff(){
         console.log("Trying to write");
-
-        var ref = firebase.database().ref('experiments/');
-        ref.push(obj);
-
+        var experiments = firebase.database().ref('experiments/');
+        experiments.push(jsPsych.data.getData());
+        var users = firebase.database().ref('users/');
+        users.push(firebase.auth().currentUser.uid);
         console.log("Pushing some s...tuff!");
+      };
+
+      function userLogin(){
+        firebase.auth().signInAnonymously().catch(function(error) {
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          // [START_EXCLUDE]
+          if (errorCode === 'auth/operation-not-allowed') {
+            alert('You must enable Anonymous auth in the Firebase Console.');
+          } else {
+            console.error(error);
+          }
+          // [END_EXCLUDE]
+        });
+        firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            // User is signed in.
+            var isAnonymous = user.isAnonymous;
+            var uid = user.uid;
+            console.log(uid + " signed in");
+            // [END_EXCLUDE]
+          } else {
+            // User is signed out.
+          }
+        });
+      };
+
+      function userLogout(){
+        if (firebase.auth().currentUser) {
+          // [START signout]
+          console.log(firebase.auth().currentUser.uid + " logged out.");
+          firebase.auth().signOut();
+          // [END signout]
+        } 
       }
 
       var welcome_block = {
         type: "text",
-        text: "Welcome to the melodic tension experiment. Press any key to begin."
+        text: "<h3>Welcome to the melodic tension experiment!</h3> " +
+        "<p>Before starting the experiment, we will show a short survey to know about the background of our participants.</p> " +
+        "<p><i>Press any key to continue.</i></p>"
+      };
+
+      var survey_trial = {
+        type: 'survey-multi-choice',
+        questions: [
+          "What is your age range?", 
+          "What genre do you identify with?", 
+          "Are you left-handed or right-handed?", 
+          "Do you have perfect pitch?", 
+          "Do you have normal hearing?", 
+          "How many musical instruments do you play?", 
+          "If you play at least one, how many years have you played? If you play several, we mean your main instrument.", 
+          "Also, how many of those years have you had formal training? (main instrument)"],
+        options: [
+        ['<18','18-24','25-32','>32'], 
+        ['Male', 'Female', 'Other'],
+        ['Left-handed', 'Right-handed'],
+        ['Yes', 'No'],
+        ['Yes', 'No'],
+        ['0', '1', '2', '3', '4', '>4'],
+        ['<1','1-2','2-4','5-10','>10', 'Not applicable'],
+        ['<1','1-2','2-4','5-10','>10', 'Not applicable']],
+        horizontal: true,
+        preamble: "<h3>Short survey</h3> " +
+        "<p>This information is gathered in order to get some demographics about the experiment.</p> " +
+        "<p>Every question is optional, if you do not want to answer any of them, simply skip them.</p> " +
+        "<p>This information is collected separately to the answers of the experiment and they are not linked. Your answers to the experiment are anonymous.</p>"
       };
 
       /* define instructions block */
       var instructions_block = {
-        type: "text",
-        text: "<p>In this experiment, you will rate the <strong>melodic tension</strong> " +
+        type: "button-response",
+        stimulus: "<h3>Melodic tension experiment</h3> " +
+            "<p>In this experiment, you will rate the <strong>melodic tension</strong> " +
             "of several music excerpts.</p><p>For this purpose, use your <strong>keyboard</strong> " +
-            "and press the corresponding number key according to your perceived musical tension.</p>" +
-            "<p>Press any key to begin.</p>",
-        timing_post_trial: 1000
+            "and press the corresponding <strong>number key</strong> according to your perceived musical tension.</p>" +
+            "<p>There are no direct risks or benefits outside of your course credit for doing this experiment, you may opt out at any time.</p> "+
+            "<p>By proceeding with the experiment you are giving us consent to use your data in the analysis of our results.</p>",
+        is_html: true,
+        choices: ["Start experiment"],
+        timing_post_trial: 1000,
+        on_finish: function(){
+          userLogin();
+        }
       };
 
       var trial = {
@@ -73,6 +146,7 @@
       /* create experiment timeline array */
       var timeline = [];
       timeline.push(welcome_block);
+      timeline.push(survey_trial);
       timeline.push(instructions_block);
       timeline.push(trial);
       timeline.push(conclusion_block);
@@ -82,7 +156,7 @@
         timeline: timeline,
         show_progress_bar: true,
         on_finish: function(){
-          writeStuff(jsPsych.data.getData());
+          writeStuff();
         }
       });
 
