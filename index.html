@@ -13,6 +13,7 @@
     <script src="jspsych-5.0.3/jspsych.js"></script>
     <script src="jspsych-5.0.3/plugins/jspsych-text.js"></script>
     <script src="jspsych-5.0.3/plugins/jspsych-survey-multi-choice.js"></script>
+    <script src="jspsych-5.0.3/plugins/jspsych-survey-text.js"></script>
     <script src="jspsych-5.0.3/plugins/jspsych-single-audio.js"></script>
     <script src="jspsych-5.0.3/plugins/jspsych-button-response.js"></script>
     <link href="jspsych-5.0.3/css/jspsych.css" rel="stylesheet" type="text/css"></link>
@@ -77,6 +78,85 @@
         } 
       }
 
+      var stimulus_practice = [
+        {stimulus: './stimuli/trial_melody_major_allharm.mp3'},
+        {stimulus: './stimuli/trial_melody_major_oddharm.mp3'},
+        {stimulus: './stimuli/trial_melody_major_oddharmlow.mp3'},
+        {stimulus: './stimuli/trial_melody_major_oddharmhigh.mp3'},
+        {stimulus: './stimuli/trial_melody_major_evenharm.mp3'},
+        {stimulus: './stimuli/trial_melody_major_evenharmlow.mp3'},
+        {stimulus: './stimuli/trial_melody_major_evenharmhigh.mp3'},
+        {stimulus: './stimuli/trial_melody_minor_allharm.mp3'},
+        {stimulus: './stimuli/trial_melody_minor_oddharm.mp3'},
+        {stimulus: './stimuli/trial_melody_minor_oddharmlow.mp3'},
+        {stimulus: './stimuli/trial_melody_minor_oddharmhigh.mp3'},
+        {stimulus: './stimuli/trial_melody_minor_evenharm.mp3'},
+        {stimulus: './stimuli/trial_melody_minor_evenharmlow.mp3'},
+        {stimulus: './stimuli/trial_melody_minor_evenharmhigh.mp3'}
+      ];
+
+      var stimulus = [
+        {stimulus: './stimuli/stimulus_1_major_allharm.mp3'},
+        {stimulus: './stimuli/stimulus_1_major_oddharm.mp3'},
+        {stimulus: './stimuli/stimulus_1_major_oddharmlow.mp3'},
+        {stimulus: './stimuli/stimulus_1_major_oddharmhigh.mp3'},
+        {stimulus: './stimuli/stimulus_1_major_evenharm.mp3'},
+        {stimulus: './stimuli/stimulus_1_major_evenharmlow.mp3'},
+        {stimulus: './stimuli/stimulus_1_major_evenharmhigh.mp3'},
+        {stimulus: './stimuli/stimulus_1_minor_allharm.mp3'},
+        {stimulus: './stimuli/stimulus_1_minor_oddharm.mp3'},
+        {stimulus: './stimuli/stimulus_1_minor_oddharmlow.mp3'},
+        {stimulus: './stimuli/stimulus_1_minor_oddharmhigh.mp3'},
+        {stimulus: './stimuli/stimulus_1_minor_evenharm.mp3'},
+        {stimulus: './stimuli/stimulus_1_minor_evenharmlow.mp3'},
+        {stimulus: './stimuli/stimulus_1_minor_evenharmhigh.mp3'},
+
+        {stimulus: './stimuli/stimulus_2_major_allharm.mp3'},
+        {stimulus: './stimuli/stimulus_2_major_oddharm.mp3'},
+        {stimulus: './stimuli/stimulus_2_major_oddharmlow.mp3'},
+        {stimulus: './stimuli/stimulus_2_major_oddharmhigh.mp3'},
+        {stimulus: './stimuli/stimulus_2_major_evenharm.mp3'},
+        {stimulus: './stimuli/stimulus_2_major_evenharmlow.mp3'},
+        {stimulus: './stimuli/stimulus_2_major_evenharmhigh.mp3'},
+        {stimulus: './stimuli/stimulus_2_minor_allharm.mp3'},
+        {stimulus: './stimuli/stimulus_2_minor_oddharm.mp3'},
+        {stimulus: './stimuli/stimulus_2_minor_oddharmlow.mp3'},
+        {stimulus: './stimuli/stimulus_2_minor_oddharmhigh.mp3'},
+        {stimulus: './stimuli/stimulus_2_minor_evenharm.mp3'},
+        {stimulus: './stimuli/stimulus_2_minor_evenharmlow.mp3'},
+        {stimulus: './stimuli/stimulus_2_minor_evenharmhigh.mp3'},
+
+        {stimulus: './stimuli/stimulus_3_major_allharm.mp3'},
+        {stimulus: './stimuli/stimulus_3_major_oddharm.mp3'},
+        {stimulus: './stimuli/stimulus_3_major_oddharmlow.mp3'},
+        {stimulus: './stimuli/stimulus_3_major_oddharmhigh.mp3'},
+        {stimulus: './stimuli/stimulus_3_major_evenharm.mp3'},
+        {stimulus: './stimuli/stimulus_3_major_evenharmlow.mp3'},
+        {stimulus: './stimuli/stimulus_3_major_evenharmhigh.mp3'},
+        {stimulus: './stimuli/stimulus_3_minor_allharm.mp3'},
+        {stimulus: './stimuli/stimulus_3_minor_oddharm.mp3'},
+        {stimulus: './stimuli/stimulus_3_minor_oddharmlow.mp3'},
+        {stimulus: './stimuli/stimulus_3_minor_oddharmhigh.mp3'},
+        {stimulus: './stimuli/stimulus_3_minor_evenharm.mp3'},
+        {stimulus: './stimuli/stimulus_3_minor_evenharmlow.mp3'},
+        {stimulus: './stimuli/stimulus_3_minor_evenharmhigh.mp3'},
+
+        {stimulus: './stimuli/stimulus_4_major_allharm.mp3'},
+        {stimulus: './stimuli/stimulus_4_major_oddharm.mp3'},
+        {stimulus: './stimuli/stimulus_4_major_oddharmlow.mp3'},
+        {stimulus: './stimuli/stimulus_4_major_oddharmhigh.mp3'},
+        {stimulus: './stimuli/stimulus_4_major_evenharm.mp3'},
+        {stimulus: './stimuli/stimulus_4_major_evenharmlow.mp3'},
+        {stimulus: './stimuli/stimulus_4_major_evenharmhigh.mp3'},
+        {stimulus: './stimuli/stimulus_4_minor_allharm.mp3'},
+        {stimulus: './stimuli/stimulus_4_minor_oddharm.mp3'},
+        {stimulus: './stimuli/stimulus_4_minor_oddharmlow.mp3'},
+        {stimulus: './stimuli/stimulus_4_minor_oddharmhigh.mp3'},
+        {stimulus: './stimuli/stimulus_4_minor_evenharm.mp3'},
+        {stimulus: './stimuli/stimulus_4_minor_evenharmlow.mp3'},
+        {stimulus: './stimuli/stimulus_4_minor_evenharmhigh.mp3'},
+      ];
+
       var welcome_block = {
         type: "text",
         text: "<h3>Welcome to the melodic tension experiment!</h3> " +
@@ -84,7 +164,7 @@
         "<p><i>Press any key to continue.</i></p>"
       };
 
-      var survey_trial = {
+      var demographics = {
         type: 'survey-multi-choice',
         questions: [
           "What is your age range?", 
@@ -108,18 +188,44 @@
         preamble: "<h3>Short survey</h3> " +
         "<p>This information is gathered to get some demographics about our participants.</p> " +
         "<p>Every question is optional, if you do not want to answer any of them, simply skip them.</p> " +
-        "<p>This information is collected separately to the answers of the experiment and they are not linked. Your answers to the experiment are anonymous.</p>"
+        "<p>This information will be used separately to the answers of the experiment. Your answers to the experiment are anonymous.</p>"
       };
 
-      /* define instructions block */
-      var instructions_block = {
+      var practice_info = {
+        type: "text",
+        text: "<h3>Practice session</h3> " +
+            "<p><i>Now, we will present you with a few practice trials before starting the real experiment. " +
+            "However, the task and instructions will be the same as for the real experiment. "+
+            "The answers for the practice session <strong>will not be recorded.</strong></i></p>"+  
+            "<p>In this experiment, you will rate the <strong>melodic tension</strong> " +
+            "of several music excerpts.</p><p>For this purpose, use your <strong>keyboard</strong> " +
+            "and press the corresponding <strong>number key</strong> according to your perceived musical tension.</p>"
+      };
+
+      var practice = {
+        type: "single-audio",
+        choices:['1','2','3','4','5','6','7'],
+        timing_response: -1,
+        randomize_order: true,
+        show_progress_bar: true,
+        prompt: "<h3>Melodic tension experiment - Practice session</h3> "+ 
+                "<p>Listen to the musical excerpt. " +
+                "Please use the <strong>number keys [1-7]</strong> in your keyboard to rate the musical tension.</p>" +
+                "<p>Also, please <strong>wait until the audio has finished</strong> to provide your answer."+
+                "<p><strong>[1]</strong>: Least tension - <strong>[7]</strong>: Most tension</p>",
+        timeline: stimulus_practice
+      };
+
+      var agreement = {
         type: "button-response",
         stimulus: "<h3>Melodic tension experiment</h3> " +
+            "<h4>Great! You finished the practice session!</h4>" +
+            "<p>You are now about to begin the real experiment." +
             "<p>In this experiment, you will rate the <strong>melodic tension</strong> " +
             "of several music excerpts.</p><p>For this purpose, use your <strong>keyboard</strong> " +
             "and press the corresponding <strong>number key</strong> according to your perceived musical tension.</p>" +
-            "<p>There are no direct risks or benefits outside of your course credit for doing this experiment, you may opt out at any time.</p> "+
-            "<p>By proceeding with the experiment you are giving us consent to use your data in the analysis of our results.</p>",
+            "<p>There are no direct risks or benefits outside of your course credit for doing this experiment, you may opt out at any time. "+
+            "By proceeding with the experiment you are giving us consent to use your data in the analysis of our results.</p>",
         is_html: true,
         choices: ["Start experiment"],
         timing_post_trial: 1000,
@@ -128,30 +234,44 @@
         }
       };
 
-      var trial = {
+      var experiment = {
         type: "single-audio",
-        stimulus: "wav/sine.mp3",
         choices:['1','2','3','4','5','6','7'],
         timing_response: -1,
+        randomize_order: true,
         prompt: "<h3>Melodic tension experiment</h3> "+ 
                 "<p>Listen to the musical excerpt. " +
                 "Please use the <strong>number keys [1-7]</strong> in your keyboard to rate the musical tension.</p>" +
                 "<p>Also, please <strong>wait until the audio has finished</strong> to provide your answer."+
-                "<p><strong>[1]</strong>: Least tension - <strong>[7]</strong>: Most tension</p>"
+                "<p><strong>[1]</strong>: Least tension - <strong>[7]</strong>: Most tension</p>",
+        timeline: stimulus
       };
 
-      var conclusion_block = {
-        type: "text",
-        text: "The experiment has concluded. Thank you!"
+      var thank = {
+        type: "survey-text",
+        preamble: "<h4>The experiment has concluded. Thank you!</h4>"+
+                  "In case you need to claim credit for this experiment, please provide us with your McGill ID",
+        questions:["Please provide McGill ID:"]        
       };
+
+      var conclude = {
+        type: "text",
+        text: "<h3>That is it! Thank you again!</h3> " +
+              "<p>We hope that you have enjoyed the experiment :)</p> " +
+              "<p><i>Press any key to conclude the experiment</i><p>"
+      };
+
 
       /* create experiment timeline array */
       var timeline = [];
       timeline.push(welcome_block);
-      timeline.push(survey_trial);
-      timeline.push(instructions_block);
-      timeline.push(trial);
-      timeline.push(conclusion_block);
+      timeline.push(demographics);
+      timeline.push(practice_info);
+      timeline.push(practice);
+      timeline.push(agreement);
+      timeline.push(experiment);
+      timeline.push(thank);
+      timeline.push(conclude);
 
       /* start the experiment */
       jsPsych.init({
@@ -159,7 +279,7 @@
         show_progress_bar: true,
         on_finish: function(){
           writeStuff();
-        }
+        }      
       });
 
   </script>
