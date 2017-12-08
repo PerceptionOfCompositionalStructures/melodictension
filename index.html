@@ -22,6 +22,9 @@
   <body>
   </body>
   <script>
+      var expRef;
+      var demographics;
+
       document.addEventListener('DOMContentLoaded', function() {
         var config = {
             apiKey: "AIzaSyC9h6hWI4x4_V7-Je3kLbN6Jj8sXJfUJsw",
@@ -34,14 +37,17 @@
           firebase.initializeApp(config);
       });
 
-      function writeStuff(){
-        console.log("Trying to write");
-        var experiments = firebase.database().ref('experiments/');
-        experiments.push(jsPsych.data.getData());
-        var users = firebase.database().ref('users/');
-        users.push(firebase.auth().currentUser.uid);
-        console.log("Pushing some s...tuff!");
-      };
+      function updateTrial(key, entry){
+        console.log("Updating entry with new trial");
+        var entryRef = expRef.child(key);
+        entryRef.update(entry);
+      }
+
+      function writeId(sid){
+        console.log("Saving id");
+        var sidRef = firebase.database().ref('studentIds/');
+        sidRef.push(sid);
+      }
 
       function userLogin(){
         firebase.auth().signInAnonymously().catch(function(error) {
@@ -58,10 +64,13 @@
         });
         firebase.auth().onAuthStateChanged(function(user) {
           if (user) {
-            // User is signed in.
-            var isAnonymous = user.isAnonymous;
-            var uid = user.uid;
-            console.log(uid + " signed in");
+            // User is signed in.                        
+            var experimentsRef = firebase.database().ref('experiments/');
+            var demographicsRef = firebase.database().ref('demographics/');
+            console.log("Creating entry for user" + user.uid);
+            expRef = experimentsRef.child(user.uid);            
+            console.log("Logging demographics information")
+            demographicsRef.push(demographics);
             // [END_EXCLUDE]
           } else {
             // User is signed out.
@@ -79,82 +88,70 @@
       }
 
       var stimulus_practice = [
-        {stimulus: './stimuli/trial_melody_major_allharm.mp3'},
-        {stimulus: './stimuli/trial_melody_major_oddharm.mp3'},
-        {stimulus: './stimuli/trial_melody_major_oddharmlow.mp3'},
-        {stimulus: './stimuli/trial_melody_major_oddharmhigh.mp3'},
-        {stimulus: './stimuli/trial_melody_major_evenharm.mp3'},
-        {stimulus: './stimuli/trial_melody_major_evenharmlow.mp3'},
-        {stimulus: './stimuli/trial_melody_major_evenharmhigh.mp3'},
-        {stimulus: './stimuli/trial_melody_minor_allharm.mp3'},
-        {stimulus: './stimuli/trial_melody_minor_oddharm.mp3'},
-        {stimulus: './stimuli/trial_melody_minor_oddharmlow.mp3'},
-        {stimulus: './stimuli/trial_melody_minor_oddharmhigh.mp3'},
-        {stimulus: './stimuli/trial_melody_minor_evenharm.mp3'},
-        {stimulus: './stimuli/trial_melody_minor_evenharmlow.mp3'},
-        {stimulus: './stimuli/trial_melody_minor_evenharmhigh.mp3'}
+        {stimulus: './stimuli/0a_a.mp3'},
+        {stimulus: './stimuli/0b_a.mp3'}
       ];
 
       var stimulus = [
-        {stimulus: './stimuli/stimulus_1_major_allharm.mp3'},
-        {stimulus: './stimuli/stimulus_1_major_oddharm.mp3'},
-        {stimulus: './stimuli/stimulus_1_major_oddharmlow.mp3'},
-        {stimulus: './stimuli/stimulus_1_major_oddharmhigh.mp3'},
-        {stimulus: './stimuli/stimulus_1_major_evenharm.mp3'},
-        {stimulus: './stimuli/stimulus_1_major_evenharmlow.mp3'},
-        {stimulus: './stimuli/stimulus_1_major_evenharmhigh.mp3'},
-        {stimulus: './stimuli/stimulus_1_minor_allharm.mp3'},
-        {stimulus: './stimuli/stimulus_1_minor_oddharm.mp3'},
-        {stimulus: './stimuli/stimulus_1_minor_oddharmlow.mp3'},
-        {stimulus: './stimuli/stimulus_1_minor_oddharmhigh.mp3'},
-        {stimulus: './stimuli/stimulus_1_minor_evenharm.mp3'},
-        {stimulus: './stimuli/stimulus_1_minor_evenharmlow.mp3'},
-        {stimulus: './stimuli/stimulus_1_minor_evenharmhigh.mp3'},
+        {stimulus: './stimuli/1a_a.mp3', data:{type:'1a_a'}},
+        {stimulus: './stimuli/1a_o.mp3', data:{type:'1a_o'}},
+        {stimulus: './stimuli/1a_ol.mp3', data:{type:'1a_ol'}},
+        {stimulus: './stimuli/1a_oh.mp3', data:{type:'1a_oh'}},
+        {stimulus: './stimuli/1a_e.mp3', data:{type:'1a_e'}},
+        {stimulus: './stimuli/1a_el.mp3', data:{type:'1a_el'}},
+        {stimulus: './stimuli/1a_eh.mp3', data:{type:'1a_eh'}},
+        {stimulus: './stimuli/1b_a.mp3', data:{type:'1b_a'}},
+        {stimulus: './stimuli/1b_o.mp3', data:{type:'1b_o'}},
+        {stimulus: './stimuli/1b_ol.mp3', data:{type:'1b_ol'}},
+        {stimulus: './stimuli/1b_oh.mp3', data:{type:'1b_oh'}},
+        {stimulus: './stimuli/1b_e.mp3', data:{type:'1b_e'}},
+        {stimulus: './stimuli/1b_el.mp3', data:{type:'1b_el'}},
+        {stimulus: './stimuli/1b_eh.mp3', data:{type:'1b_eh'}},
 
-        {stimulus: './stimuli/stimulus_2_major_allharm.mp3'},
-        {stimulus: './stimuli/stimulus_2_major_oddharm.mp3'},
-        {stimulus: './stimuli/stimulus_2_major_oddharmlow.mp3'},
-        {stimulus: './stimuli/stimulus_2_major_oddharmhigh.mp3'},
-        {stimulus: './stimuli/stimulus_2_major_evenharm.mp3'},
-        {stimulus: './stimuli/stimulus_2_major_evenharmlow.mp3'},
-        {stimulus: './stimuli/stimulus_2_major_evenharmhigh.mp3'},
-        {stimulus: './stimuli/stimulus_2_minor_allharm.mp3'},
-        {stimulus: './stimuli/stimulus_2_minor_oddharm.mp3'},
-        {stimulus: './stimuli/stimulus_2_minor_oddharmlow.mp3'},
-        {stimulus: './stimuli/stimulus_2_minor_oddharmhigh.mp3'},
-        {stimulus: './stimuli/stimulus_2_minor_evenharm.mp3'},
-        {stimulus: './stimuli/stimulus_2_minor_evenharmlow.mp3'},
-        {stimulus: './stimuli/stimulus_2_minor_evenharmhigh.mp3'},
+        {stimulus: './stimuli/2a_a.mp3', data:{type:'2a_a'}},
+        {stimulus: './stimuli/2a_o.mp3', data:{type:'2a_o'}},
+        {stimulus: './stimuli/2a_ol.mp3', data:{type:'2a_ol'}},
+        {stimulus: './stimuli/2a_oh.mp3', data:{type:'2a_oh'}},
+        {stimulus: './stimuli/2a_e.mp3', data:{type:'2a_e'}},
+        {stimulus: './stimuli/2a_el.mp3', data:{type:'2a_el'}},
+        {stimulus: './stimuli/2a_eh.mp3', data:{type:'2a_eh'}},
+        {stimulus: './stimuli/2b_a.mp3', data:{type:'2b_a'}},
+        {stimulus: './stimuli/2b_o.mp3', data:{type:'2b_o'}},
+        {stimulus: './stimuli/2b_ol.mp3', data:{type:'2b_ol'}},
+        {stimulus: './stimuli/2b_oh.mp3', data:{type:'2b_oh'}},
+        {stimulus: './stimuli/2b_e.mp3', data:{type:'2b_e'}},
+        {stimulus: './stimuli/2b_el.mp3', data:{type:'2b_el'}},
+        {stimulus: './stimuli/2b_eh.mp3', data:{type:'2b_eh'}},
 
-        {stimulus: './stimuli/stimulus_3_major_allharm.mp3'},
-        {stimulus: './stimuli/stimulus_3_major_oddharm.mp3'},
-        {stimulus: './stimuli/stimulus_3_major_oddharmlow.mp3'},
-        {stimulus: './stimuli/stimulus_3_major_oddharmhigh.mp3'},
-        {stimulus: './stimuli/stimulus_3_major_evenharm.mp3'},
-        {stimulus: './stimuli/stimulus_3_major_evenharmlow.mp3'},
-        {stimulus: './stimuli/stimulus_3_major_evenharmhigh.mp3'},
-        {stimulus: './stimuli/stimulus_3_minor_allharm.mp3'},
-        {stimulus: './stimuli/stimulus_3_minor_oddharm.mp3'},
-        {stimulus: './stimuli/stimulus_3_minor_oddharmlow.mp3'},
-        {stimulus: './stimuli/stimulus_3_minor_oddharmhigh.mp3'},
-        {stimulus: './stimuli/stimulus_3_minor_evenharm.mp3'},
-        {stimulus: './stimuli/stimulus_3_minor_evenharmlow.mp3'},
-        {stimulus: './stimuli/stimulus_3_minor_evenharmhigh.mp3'},
+        {stimulus: './stimuli/3a_a.mp3', data:{type:'3a_a'}},
+        {stimulus: './stimuli/3a_o.mp3', data:{type:'3a_o'}},
+        {stimulus: './stimuli/3a_ol.mp3', data:{type:'3a_ol'}},
+        {stimulus: './stimuli/3a_oh.mp3', data:{type:'3a_oh'}},
+        {stimulus: './stimuli/3a_e.mp3', data:{type:'3a_e'}},
+        {stimulus: './stimuli/3a_el.mp3', data:{type:'3a_el'}},
+        {stimulus: './stimuli/3a_eh.mp3', data:{type:'3a_eh'}},
+        {stimulus: './stimuli/3b_a.mp3', data:{type:'3b_a'}},
+        {stimulus: './stimuli/3b_o.mp3', data:{type:'3b_o'}},
+        {stimulus: './stimuli/3b_ol.mp3', data:{type:'3b_ol'}},
+        {stimulus: './stimuli/3b_oh.mp3', data:{type:'3b_oh'}},
+        {stimulus: './stimuli/3b_e.mp3', data:{type:'3b_e'}},
+        {stimulus: './stimuli/3b_el.mp3', data:{type:'3b_el'}},
+        {stimulus: './stimuli/3b_eh.mp3', data:{type:'3b_eh'}},
 
-        {stimulus: './stimuli/stimulus_4_major_allharm.mp3'},
-        {stimulus: './stimuli/stimulus_4_major_oddharm.mp3'},
-        {stimulus: './stimuli/stimulus_4_major_oddharmlow.mp3'},
-        {stimulus: './stimuli/stimulus_4_major_oddharmhigh.mp3'},
-        {stimulus: './stimuli/stimulus_4_major_evenharm.mp3'},
-        {stimulus: './stimuli/stimulus_4_major_evenharmlow.mp3'},
-        {stimulus: './stimuli/stimulus_4_major_evenharmhigh.mp3'},
-        {stimulus: './stimuli/stimulus_4_minor_allharm.mp3'},
-        {stimulus: './stimuli/stimulus_4_minor_oddharm.mp3'},
-        {stimulus: './stimuli/stimulus_4_minor_oddharmlow.mp3'},
-        {stimulus: './stimuli/stimulus_4_minor_oddharmhigh.mp3'},
-        {stimulus: './stimuli/stimulus_4_minor_evenharm.mp3'},
-        {stimulus: './stimuli/stimulus_4_minor_evenharmlow.mp3'},
-        {stimulus: './stimuli/stimulus_4_minor_evenharmhigh.mp3'},
+        {stimulus: './stimuli/4a_a.mp3', data:{type:'4a_a'}},
+        {stimulus: './stimuli/4a_o.mp3', data:{type:'4a_o'}},
+        {stimulus: './stimuli/4a_ol.mp3', data:{type:'4a_ol'}},
+        {stimulus: './stimuli/4a_oh.mp3', data:{type:'4a_oh'}},
+        {stimulus: './stimuli/4a_e.mp3', data:{type:'4a_e'}},
+        {stimulus: './stimuli/4a_el.mp3', data:{type:'4a_el'}},
+        {stimulus: './stimuli/4a_eh.mp3', data:{type:'4a_eh'}},
+        {stimulus: './stimuli/4b_a.mp3', data:{type:'4b_a'}},
+        {stimulus: './stimuli/4b_o.mp3', data:{type:'4b_o'}},
+        {stimulus: './stimuli/4b_ol.mp3', data:{type:'4b_ol'}},
+        {stimulus: './stimuli/4b_oh.mp3', data:{type:'4b_oh'}},
+        {stimulus: './stimuli/4b_e.mp3', data:{type:'4b_e'}},
+        {stimulus: './stimuli/4b_el.mp3', data:{type:'4b_el'}},
+        {stimulus: './stimuli/4b_eh.mp3', data:{type:'4b_eh'}},     
       ];
 
       var welcome_block = {
@@ -188,7 +185,10 @@
         preamble: "<h3>Short survey</h3> " +
         "<p>This information is gathered to get some demographics about our participants.</p> " +
         "<p>Every question is optional, if you do not want to answer any of them, simply skip them.</p> " +
-        "<p>This information will be used separately to the answers of the experiment. Your answers to the experiment are anonymous.</p>"
+        "<p>This information will be used separately to the answers of the experiment. Your answers to the experiment are anonymous.</p>",
+        on_finish: function(trial){
+          demographics = JSON.parse(trial.responses);
+        }
       };
 
       var practice_info = {
@@ -244,14 +244,26 @@
                 "Please use the <strong>number keys [1-7]</strong> in your keyboard to rate the musical tension.</p>" +
                 "<p>Also, please <strong>wait until the audio has finished</strong> to provide your answer."+
                 "<p><strong>[1]</strong>: Least tension - <strong>[7]</strong>: Most tension</p>",
-        timeline: stimulus
+        timeline: stimulus,
+        on_finish: function(trial){
+          var entry = {                        
+            type: trial.type,
+            rating: trial.key_press - 48,
+            rt: trial.rt
+          };
+          updateTrial(trial.trial_index-5, entry);
+        }    
       };
 
       var thank = {
         type: "survey-text",
         preamble: "<h4>The experiment has concluded. Thank you!</h4>"+
                   "In case you need to claim credit for this experiment, please provide us with your McGill ID",
-        questions:["Please provide McGill ID:"]        
+        questions:["Please provide McGill ID:"],
+        on_finish: function(trial){
+          var resp = JSON.parse(trial.responses);
+          writeId(resp.Q0);
+        }        
       };
 
       var conclude = {
@@ -276,10 +288,7 @@
       /* start the experiment */
       jsPsych.init({
         timeline: timeline,
-        show_progress_bar: true,
-        on_finish: function(){
-          writeStuff();
-        }      
+        show_progress_bar: true
       });
 
   </script>
